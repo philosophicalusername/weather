@@ -22,7 +22,7 @@ def helper():
 # Function to query user if they would like to look for another location
 def keep_running():
     """Function to ask user if they wish to continue or not"""
-    answer = input("\nWould you like to check another location?" + "\nYes or No: ")
+    answer = input("\nWould you like to check another location?" + "\n    Yes or No: ")
     if answer == "yes":
         print("\nGreat! Let's continue...")
         time.sleep(.25)
@@ -56,6 +56,8 @@ def ask_user():
             print("\n    Connection available")
             time.sleep(.5)
             print("\n        Retrieving Data")
+            print("\n ")
+            print("\n ")
             time.sleep(.5)
             all_data_city = json.loads(infodump_city.text)
         except:
@@ -72,6 +74,7 @@ def ask_user():
                 "\n        Pressure = " + str(current_pressure_city) + " millibars" + "\n " +
                 "\n        Humidity = " + str(current_humidity_city) + "%" + "\n " +
                 "\n        Description = " + str(weather.title()))
+            print("\n ")
             helper()
         else:
             print("\n    City not found")
