@@ -77,7 +77,7 @@ def ask_user():
             print("\n ")
             helper()
         else:
-            print("\n    City not found")
+            print("\n    I am sorry, that city was not found.")
             helper()
     user_responded()
 
