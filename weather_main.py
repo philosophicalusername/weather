@@ -1,48 +1,86 @@
-# Initial Weather Attempt
+# Beginning - loading json, time, and requests
 
 import json
 import requests
+import time
 
-print('Welcome to Whether the Weather will Wither')
+# Initial welcome message
+print('\nWelcome to Whether the Weather will Wither')
 print("")
-print('How would you like to lookup your data?')
 
-city_name = ""
-zipcode = ""
+# Global variable for api key and setting input to None
+API_KEY = "5c492a5a90926c996374f7965ba323c6"
 
-whichone = input("City or Zip?")
+user_input = None
 
-if whichone == "City" or "city":
-    city_name = input("Please enter your city name:  ")
-else:
-    zipcode = input("Please enter your zip code:  ")
-    
-#while whichone == 'City' and whichone != 'Zip':
-#    print("Please enter your city name:")
-#    city_name = input()
-#    return
+# helper function to make re-running or ending program work
+def helper():
+    """Helper function to re-run program"""
+    while keep_running():
+        keep_running()
 
-api_key = "5c492a5a90926c996374f7965ba323c6"
+# Function to query user if they would like to look for another location
+def keep_running():
+    """Function to ask user if they wish to continue or not"""
+    answer = input("\nWould you like to check another location?" + "\nYes or No: ")
+    if answer == "yes":
+        print("\nGreat! Let's continue...")
+        time.sleep(.25)
+        print("\n  ヘ(^_^ヘ)    °\(^▿^)/°")
+        print("")
+        ask_user()
+    elif answer == "Yes":
+        print("\nGreat! Let's continue...")
+        time.sleep(.25)
+        print("\n  ヘ(^_^ヘ)    °\(^▿^)/°")
+        print("")
+        ask_user()
+    else:
+        print("\nThank you for your usage.")
+        time.sleep(1)
+        print("\n         Goodbye")
+        return False
 
-lat = "36.3729"
-lon = "94.2088"
-beginningurl = "http://api.openweathermap.org/data/2.5/weather?"
-url = beginningurl + "appid=" + api_key +"&q=" + city_name
-infodump = requests.get(url)
-allData = json.loads(infodump.text)
+# Funtion to ask user for information as well as running web query from API
+def ask_user():
+    """Main function that asks for user input and performs query of API"""
+    user_input = input("Please enter the city name or zipcode for the weather: ")
+    def user_responded():
+        city_name = user_input
+        upper_name = city_name
+        city_name_response = city_name
+        url1 = "http://api.openweathermap.org/data/2.5/weather?"
+        url2 = url1 + "appid=" + API_KEY + "&q=" + city_name_response + "&units=imperial"
+        try:
+            infodump_city = requests.get(url2)
+            print("\n    Connection available")
+            time.sleep(.5)
+            print("\n        Retrieving Data")
+            time.sleep(.5)
+            all_data_city = json.loads(infodump_city.text)
+        except:
+            print("Something went wrong...")
+        if all_data_city["cod"] != "404":
+            main = all_data_city["main"]
+            current_temp_city = main["temp"]
+            current_pressure_city = main["pressure"]
+            current_humidity_city = main["humidity"]
+            end_city = all_data_city["weather"]
+            weather = end_city[0]["description"]
+            print("\n  The weather in " + upper_name.title() + " is as follows:")
+            print("\n        Temperature = " + str(current_temp_city) + "° Farenheit" + "\n " +
+                "\n        Pressure = " + str(current_pressure_city) + " millibars" + "\n " +
+                "\n        Humidity = " + str(current_humidity_city) + "%" + "\n " +
+                "\n        Description = " + str(weather.title()))
+            helper()
+        else:
+            print("\n    City not found")
+            helper()
+    user_responded()
 
-if allData["cod"] != "404":
-    main = allData["main"]
-    current_temp = main["temp"]
-    current_pressure = main["pressure"]
-    current_humidity = main["humidity"]
-    endInfo = allData["weather"]
-    weather = endInfo[0]["description"]
-    print(" Temperature = " + str(current_temp) +
-          "\n Pressure = " + str(current_pressure) +
-          "\n Humidity = " + str(current_humidity) +
-          "\n Description = " + str(weather))
-else:
-    print(" City not Found ")
+# Calling the main function
+ask_user()
 
-print(endInfo)
+# Part of the helper function at beginning of program
+if __name__ == "__helper__":
+    helper()
